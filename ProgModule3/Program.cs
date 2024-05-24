@@ -32,20 +32,30 @@ public class Program
 	{
 		string inputPath = "E:\\Projects C-type lang\\C# Projects\\ProgModule3\\ProgModule3\\employees.xml";
 		string filteredPath = "E:\\Projects C-type lang\\C# Projects\\ProgModule3\\ProgModule3\\sorted_employees.xml";
-		//string updatedOutputFilePath = "UpdatedLibrary.xml";
+		string outputPathTxt = "E:\\Projects C-type lang\\C# Projects\\ProgModule3\\ProgModule3\\employees.txt";
 
 		List<Employee> employees = DeserializeEmployees(inputPath);
-		employees.ForEach(Console.WriteLine);
+        Console.WriteLine("Deserialized employees: ");
+        employees.ForEach(Console.WriteLine);
+        Console.WriteLine("\n=================================\n");
 
-		//var filteredBooks = employees.Where(book => book.Year > 2015)
-		//						 .OrderByDescending(book => book.Price)
-		//						 .ToList();
+        var filteredEmployees = employees.OrderBy(employees => employees.HireDate);
+		filteredEmployees.ToList().ForEach(Console.WriteLine);
+		Console.WriteLine("\n=================================\n");
 
-		//SerializeEmployees(filteredBooks, filteredPath);
+		SerializeEmployees(filteredEmployees.ToList(), filteredPath);
+        Console.WriteLine("Successfully serialized into xml file");
+		Console.WriteLine("\n=================================\n");
 
-		//employees.RemoveAll(book => book.Author == "John Doe");
-
-		//SerializeEmployees(employees, updatedOutputFilePath);
+		using(StreamWriter streamWriter = new StreamWriter(outputPathTxt))
+		{
+			foreach (var employee in employees)
+			{
+				streamWriter.WriteLine($"Name: [{employee.Name}] Position: [{employee.Position}] HireDate: [{employee.HireDate:yyyy-MM-dd}]");
+			}
+		}
+		Console.WriteLine("Successfully written into txt file");
+		Console.WriteLine("\n=================================\n");
 	}
 
 	private static List<Employee> DeserializeEmployees(string filePath)
